@@ -192,7 +192,7 @@ def main():
                     continue
 
                 key = url.encode('utf-8')
-                file_name = sha256((url + ":" + r.text).encode('utf-8')).hexdigest() + ".rss.gz"
+                file_name = sha256((url + ":" + r.text).encode('utf-8')).hexdigest() + ".rss"
                 now = time()
 
                 result_set['url_info'][key] = {
@@ -203,10 +203,10 @@ def main():
                     'size': len(r.text),
                     }
 
-                with gzip.open(join_path(save_dir, file_name), "wb") as f:
+                with gzip.open(join_path(save_dir, file_name + ".gz"), "wb") as f:
                     f.write(r.text.encode('utf-8'))
 
-                with gzip.open(join_path(save_dir, "meta.yaml"), "wb") as f:
+                with gzip.open(join_path(save_dir, "meta.yaml.gz"), "wb") as f:
                     f.write(yaml.dump(result_set))
 
                 rss_fetched += 1

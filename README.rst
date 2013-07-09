@@ -41,7 +41,7 @@ Simple:::
 After the program finishes (it will not print out anything on success)
 look for contents of directory ``saved``. There will be subdirectories
 with timestamps as their names, which in turn contain actual RSS files
-(``.rss.gz``) and a metadata file in YAML format (``meta.yaml.gz``).
+(``*.rss.gz``) and a metadata file in YAML format (``meta.yaml.gz``).
 
 You can customize the script's behavior a bit -- look for options with
 ``./collect.py --help``.
