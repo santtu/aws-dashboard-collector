@@ -72,7 +72,7 @@ from traceback import print_exc
 import re
 import yaml
 from os.path import join as join_path
-from os import makedirs
+from os import makedirs, rename
 from collections import deque
 from hashlib import sha256
 import gzip
@@ -203,11 +203,16 @@ def main():
                     'size': len(r.text),
                     }
 
-                with gzip.open(join_path(save_dir, file_name + ".gz"), "wb") as f:
+                data_file = join_path(save_dir, file_name)
+                meta_file = join_path(save_dir, "meta.yaml")
+
+                with gzip.open(data_file + ".gz", "wb") as f:
                     f.write(r.text.encode('utf-8'))
 
-                with gzip.open(join_path(save_dir, "meta.yaml.gz"), "wb") as f:
+                with gzip.open(meta_file + ".gz.tmp", "wb") as f:
                     f.write(yaml.dump(result_set))
+
+                rename(meta_file + ".gz.tmp", meta_file + ".gz")
 
                 rss_fetched += 1
 
