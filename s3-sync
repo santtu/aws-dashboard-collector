@@ -1,0 +1,17 @@
+#!/bin/bash -e
+DIR=${DIR-saved}
+MAXDAYS=${MAXDAYS-30}
+S3BUCKET=${S3BUCKET-s3://aws.santtu.iki.fi/cray.saved/}
+DRYRUN=${DRYRUN-}
+S3CMD=${S3CMD-s3cmd}
+if [ -n "$DRYRUN" ]; then
+  S3CMD="echo $S3CMD"
+fi 
+if [ -n "$MAXDAYS" ]; then
+  MAXDAYSARG="-mtime -$MAXDAYS"
+else
+  MAXDAYSARGS=""
+fi
+cd $DIR
+find . -maxdepth 1 -mindepth 1 $MAXDAYSARG -type d -printf '%f\0' | xargs -0 -n1 -t -I'{}' $S3CMD --no-progress -v sync '{}'/ $S3BUCKET'{}'/
+exit 0
